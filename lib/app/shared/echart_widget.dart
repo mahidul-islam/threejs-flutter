@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_echarts/flutter_echarts.dart';
+import 'package:threejs/app/lib/echarts/flutter_echarts.dart';
 
 class EChartWidget extends StatelessWidget {
   const EChartWidget({
