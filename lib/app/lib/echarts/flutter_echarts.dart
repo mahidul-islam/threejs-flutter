@@ -1,11 +1,7 @@
 library flutter_echarts;
 
 import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
-
 import 'package:get/get.dart';
 import 'package:threejs/app/lib/echarts/echarts_script.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
@@ -29,6 +25,8 @@ class Echarts extends StatefulWidget {
     this.onLoad,
     this.onWebResourceError,
     this.reloadAfterInit = false,
+    this.getSetStateJS,
+    this.getControllerReference,
   }) : super(key: key);
 
   final String option;
@@ -53,6 +51,10 @@ class Echarts extends StatefulWidget {
 
   final bool reloadAfterInit;
 
+  final Function(Function(String))? getSetStateJS;
+
+  final Function(WebViewXController)? getControllerReference;
+
   @override
   _EchartsState createState() => _EchartsState();
 }
@@ -66,7 +68,7 @@ class _EchartsState extends State<Echarts> {
   void initState() {
     super.initState();
     _currentOption = widget.option;
-
+    widget.getSetStateJS?.call(update);
     if (widget.reloadAfterInit) {
       Future.delayed(const Duration(milliseconds: 100), () {
         _controller?.reload();
@@ -92,30 +94,30 @@ class _EchartsState extends State<Echarts> {
     }
   }
 
-  Set<Factory<OneSequenceGestureRecognizer>> getGestureRecognizers() {
-    Set<Factory<OneSequenceGestureRecognizer>> set = {};
-    if (widget.captureAllGestures || widget.captureHorizontalGestures) {
-      set.add(Factory<HorizontalDragGestureRecognizer>(() {
-        return HorizontalDragGestureRecognizer()
-          ..onStart = (DragStartDetails details) {}
-          ..onUpdate = (DragUpdateDetails details) {}
-          ..onDown = (DragDownDetails details) {}
-          ..onCancel = () {}
-          ..onEnd = (DragEndDetails details) {};
-      }));
-    }
-    if (widget.captureAllGestures || widget.captureVerticalGestures) {
-      set.add(Factory<VerticalDragGestureRecognizer>(() {
-        return VerticalDragGestureRecognizer()
-          ..onStart = (DragStartDetails details) {}
-          ..onUpdate = (DragUpdateDetails details) {}
-          ..onDown = (DragDownDetails details) {}
-          ..onCancel = () {}
-          ..onEnd = (DragEndDetails details) {};
-      }));
-    }
-    return set;
-  }
+  // Set<Factory<OneSequenceGestureRecognizer>> getGestureRecognizers() {
+  //   Set<Factory<OneSequenceGestureRecognizer>> set = {};
+  //   if (widget.captureAllGestures || widget.captureHorizontalGestures) {
+  //     set.add(Factory<HorizontalDragGestureRecognizer>(() {
+  //       return HorizontalDragGestureRecognizer()
+  //         ..onStart = (DragStartDetails details) {}
+  //         ..onUpdate = (DragUpdateDetails details) {}
+  //         ..onDown = (DragDownDetails details) {}
+  //         ..onCancel = () {}
+  //         ..onEnd = (DragEndDetails details) {};
+  //     }));
+  //   }
+  //   if (widget.captureAllGestures || widget.captureVerticalGestures) {
+  //     set.add(Factory<VerticalDragGestureRecognizer>(() {
+  //       return VerticalDragGestureRecognizer()
+  //         ..onStart = (DragStartDetails details) {}
+  //         ..onUpdate = (DragUpdateDetails details) {}
+  //         ..onDown = (DragDownDetails details) {}
+  //         ..onCancel = () {}
+  //         ..onEnd = (DragEndDetails details) {};
+  //     }));
+  //   }
+  //   return set;
+  // }
 
   void update(String preOption) async {
     _currentOption = widget.option;
@@ -168,6 +170,7 @@ class _EchartsState extends State<Echarts> {
       },
       onWebViewCreated: (WebViewXController webViewController) {
         _controller = webViewController;
+        widget.getControllerReference?.call(webViewController);
       },
       onPageFinished: (String url) {},
       onPageStarted: (String url) {},
