@@ -36,6 +36,49 @@ class HomeView extends GetView<HomeController> {
                     Expanded(
                       child: Column(
                         children: <Widget>[
+                          const Text('Button/Toggle',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: SizedBox(
+                                  child: InnerField(
+                                    codeController:
+                                        controller.buttonCodeController,
+                                    styles: controller.styles,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              MaterialButton(
+                                height: 60,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: EdgeInsets.zero,
+                                hoverColor: const Color(0xff0044cc),
+                                // splashColor: SGColors.whiteShade1,
+                                highlightElevation: 0,
+                                color: const Color(0xff0044cc).withOpacity(0.4),
+                                onPressed: controller.buttonOnPressed,
+                                child: const Text(
+                                  'Toggle/\nButton',
+                                  style: TextStyle(
+                                    color:
+                                        //Color(0xff0044cc)
+                                        Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
                           const Text('Option Script',
                               style: TextStyle(
                                   fontSize: 20,
@@ -43,13 +86,12 @@ class HomeView extends GetView<HomeController> {
                                   fontWeight: FontWeight.bold)),
                           const SizedBox(height: 16),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 32.0),
+                            padding: const EdgeInsets.only(bottom: 16.0),
                             child: InnerField(
                               codeController: controller.optionCodeController,
                               styles: controller.styles,
                             ),
                           ),
-                          const SizedBox(height: 16),
                           const Text('Extra Script',
                               style: TextStyle(
                                   fontSize: 20,
@@ -70,11 +112,80 @@ class HomeView extends GetView<HomeController> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            MaterialButton(
+                              height: 48,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              hoverColor: const Color(0xff0044cc),
+                              // splashColor: SGColors.whiteShade1,
+                              highlightElevation: 0,
+                              color: const Color(0xff0044cc).withOpacity(0.4),
+                              onPressed: controller.getHeight,
+                              child: const Text(
+                                'Update Height',
+                                style: TextStyle(
+                                  color:
+                                      //Color(0xff0044cc)
+                                      Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            MaterialButton(
+                              height: 48,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              hoverColor: const Color(0xff0044cc),
+                              // splashColor: SGColors.whiteShade1,
+                              highlightElevation: 0,
+                              color: const Color(0xff0044cc).withOpacity(0.4),
+                              onPressed: controller.getDefault,
+                              child: const Text(
+                                'Default',
+                                style: TextStyle(
+                                  color:
+                                      //Color(0xff0044cc)
+                                      Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            MaterialButton(
+                              height: 48,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              // padding: EdgeInsets.zero,
+                              hoverColor: const Color(0xff0044cc),
+                              // splashColor: SGColors.whiteShade1,
+                              highlightElevation: 0,
+                              color: const Color(0xff0044cc).withOpacity(0.4),
+                              onPressed: controller.getWidth,
+                              child: const Text(
+                                'Update Width',
+                                style: TextStyle(
+                                  color:
+                                      //Color(0xff0044cc)
+                                      Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
                         Container(
                           key: UniqueKey(),
                           color: Colors.white,
-                          height: 400,
-                          width: 500,
+                          height: controller.graphHeight.value,
+                          width: controller.graphWidth.value,
                           child: EChartWidget(
                             interactive: true,
                             optionScript: controller.optionScript.value,
@@ -88,7 +199,7 @@ class HomeView extends GetView<HomeController> {
                         Container(
                           color: Colors.white,
                           padding: const EdgeInsets.all(16),
-                          width: 500,
+                          width: controller.graphWidth.value,
                           child: Column(
                             children: <Widget>[
                               const Text('Option Script Base 64'),
@@ -106,7 +217,7 @@ class HomeView extends GetView<HomeController> {
                         Container(
                           color: Colors.white,
                           padding: const EdgeInsets.all(16),
-                          width: 500,
+                          width: controller.graphWidth.value,
                           child: Column(
                             children: <Widget>[
                               const Text('Extra Script Base 64'),

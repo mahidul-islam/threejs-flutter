@@ -28,21 +28,18 @@ class EChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AbsorbPointer(
-      absorbing: !interactive,
-      child: SizedBox(
-        width: Get.width,
-        height: height ?? Get.height,
-        child: Echarts(
-          getSetStateJS: getSetStateJS,
-          getControllerReference: getControllerReference,
-          captureAllGestures: false,
-          captureVerticalGestures: false,
-          captureHorizontalGestures: false,
-          option: utf8.decode(base64.decode(optionScript)),
-          extraScript: utf8.decode(base64.decode(extraScript)),
-          onMessage: onMessage,
-        ),
+    return SizedBox(
+      width: Get.width,
+      height: height ?? Get.height,
+      child: Echarts(
+        getSetStateJS: getSetStateJS,
+        getControllerReference: getControllerReference,
+        captureAllGestures: false,
+        captureVerticalGestures: false,
+        captureHorizontalGestures: false,
+        option: utf8.decode(base64.decode(optionScript)),
+        extraScript: utf8.decode(base64.decode(extraScript)),
+        onMessage: onMessage,
       ),
     );
   }
